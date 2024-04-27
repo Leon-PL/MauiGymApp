@@ -6,6 +6,7 @@ using MauiGymApp.State;
 using MauiGymApp.ViewModels.Workouts.Lifts;
 using MauiGymApp.ViewModels.Workouts;
 using MauiGymApp.ViewModels.MeasurableQuantities;
+using MauiGymApp.ViewModels.Utilities;
 
 namespace MauiGymApp.Services.ImportData
 {
@@ -43,14 +44,19 @@ namespace MauiGymApp.Services.ImportData
         public async Task<IEnumerable<WorkoutDTO>> ImportWorkoutsAsync(string dataPath)
         {
             var df = GetWorkoutDataFrame(dataPath);
-            var liftdtos = GetLiftDTOs(df);
             var existing = _liftsStateService.Lifts;
             var existingNames = existing.Select(e => e.Name);
 
-            await _liftsStateService.AddLifts(liftdtos.Where(l => !existingNames.Contains(l.Name)).Select(l => new LiftViewModel(l)));
+            var liftsToAdd = GetUniqueLiftNames(df).Where(n => !existingNames.Contains(n)).Select(n => new LiftDTO() { 
+                Name = n,
+                MovementPattern = Models.MovementPattern.NA,
+                DateCreated = DateTime.Now,
+            });
 
 
-            var lifts = _liftsStateService.Lifts;
+            var lifts = _liftsStateService.Lifts.ToModels().ToList();
+            lifts.AddRange(liftsToAdd);
+      
             var days = GetDaysWithWorkouts(df);
 
             List<WorkoutDTO> workouts = [];
@@ -68,7 +74,7 @@ namespace MauiGymApp.Services.ImportData
 
                     var liftWorkout = new LiftWorkoutDTO()
                     {
-                        Lift = lifts.First(l => l.Name == liftName).ToModel(),
+                        Lift = lifts.First(l => l.Name == liftName),
                         DateTime = day,
                         DateCreated = DateTime.Now,
                     };
