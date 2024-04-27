@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MauiGymApp.Controls.AllLifts"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:MauiGymApp.Converters"
+    xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts.Lifts"
+    xmlns:hviewmodel="clr-namespace:MauiGymApp.ViewModels.Home"
+    x:Name="this">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <conv:RemoveLiftWorkoutConverter x:Key="removeLiftWorkout" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Grid BindingContext="{x:Reference this}" RowDefinitions="auto, auto, *">
+        <Picker
+            Title="Movement Pattern"
+            Margin="10"
+            FontAttributes="Bold"
+            FontSize="Large"
+            HorizontalOptions="Start"
+            ItemsSource="{Binding PickerOptions}"
+            SelectedItem="{Binding SelectedPickerOption}"
+            WidthRequest="200" />
+        <SearchBar
+            Grid.Row="1"
+            IsSpellCheckEnabled="True"
+            IsTextPredictionEnabled="True"
+            Text="{Binding SearchText}" />
+        <dxcv:DXCollectionView
+            Grid.Row="2"
+            Margin="10"
+            ItemsSource="{Binding LiftsSource}"
+            SelectedItems="{Binding SelectedLifts}">
+
+            <dxcv:DXCollectionView.Behaviors>
+                <toolkit:EventToCommandBehavior Command="{Binding SelectedLiftsChangedCommand}" EventName="SelectionChanged" />
+            </dxcv:DXCollectionView.Behaviors>
+
+            <dxcv:DXCollectionView.Triggers>
+                <DataTrigger
+                    Binding="{Binding InSelectionMode}"
+                    TargetType="dxcv:DXCollectionView"
+                    Value="true">
+                    <Setter Property="SelectionMode" Value="Multiple" />
+                </DataTrigger>
+            </dxcv:DXCollectionView.Triggers>
+
+            <dxcv:DXCollectionView.SelectedItemTemplate>
+                <DataTemplate x:DataType="viewmodel:LiftViewModel">
+                    <Grid BackgroundColor="{StaticResource Tertiary}" ColumnDefinitions="*, Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="Medium"
+                            Text="{Binding Name}" />
+                        <Button
+                            Grid.Column="1"
+                            Padding="-5"
+                            Command="{Binding MoreCommand, Source={x:Reference this}}"
+                            FontAttributes="Bold"
+                            HeightRequest="20"
+                            Text="⋮"
+                            CommandParameter="{Binding .}"
+                            WidthRequest="20">
+                            
+
+                        </Button>
+                    </Grid>
+
+                </DataTemplate>
+            </dxcv:DXCollectionView.SelectedItemTemplate>
+            <dxcv:DXCollectionView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodel:LiftViewModel">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="Medium"
+                            Text="{Binding Name}" />
+                        <Button
+                            Grid.Column="1"
+                            Padding="-5"
+                            Command="{Binding MoreCommand, Source={x:Reference this}}"
+                            FontAttributes="Bold"
+                            HeightRequest="20"
+                            Text=":"
+                            WidthRequest="20" />
+                    </Grid>
+
+                </DataTemplate>
+            </dxcv:DXCollectionView.ItemTemplate>
+        </dxcv:DXCollectionView>
+
+        <Button
+            Grid.Row="2"
+            Margin="30"
+            Command="{Binding ConfirmCommand}"
+            HeightRequest="50"
+            HorizontalOptions="End"
+            IsVisible="{Binding ShowConfirmButton}"
+            Text="Confirm"
+            VerticalOptions="End"
+            WidthRequest="90">
+
+            <Button.Shadow>
+                <Shadow Brush="{StaticResource Primary}" Radius="30" />
+            </Button.Shadow>
+        </Button>
+    </Grid>
+</ContentView>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.MeasurableQuantities.EditMeasurableQuantityPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+    Title="EditMeasurableQuantityPage"
+    x:DataType="viewmodel:EditMeasurableQuantityViewModel">
+
+    <Border
+        Padding="16,8"
+        Background="#36454F"
+        HorizontalOptions="Center"
+        StrokeShape="RoundRectangle 10">
+
+        <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
+            <Editor
+                FontSize="Medium"
+                HorizontalTextAlignment="Center"
+                InputTransparent="False"
+                Keyboard="Text"
+                Placeholder="e.g Body Fat %"
+                Text="{Binding Name}"
+                WidthRequest="300" />
+            <HorizontalStackLayout HorizontalOptions="Start" Spacing="10">
+                <Button
+                    Command="{Binding OpenQuantityTypePromptCommand}"
+                    FontSize="Medium"
+                    IsEnabled="True"
+                    IsVisible="True"
+                    Text="{Binding SelectedQuantityType}"
+                    WidthRequest="150" />
+            </HorizontalStackLayout>
+            <Editor Text="{Binding Notes}" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="50">
+                <Button
+                    Command="{Binding DeleteMeasurableQuantityCommand}"
+                    
+                    HorizontalOptions="End"
+                    Text="Delete" />
+                <Button Command="{Binding CancelCommand}" Text="Cancel" />
+                <Button
+                    Command="{Binding ConfirmCommand}"
+                    IsEnabled="{Binding IsNameNotEmpty}"
+                    Text="Confirm" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

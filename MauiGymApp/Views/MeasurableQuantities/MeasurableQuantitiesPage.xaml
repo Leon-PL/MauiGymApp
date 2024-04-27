@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.MeasurableQuantities.MeasurableQuantitiesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:MauiGymApp.Converters"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+    Title="Measurements"
+    x:DataType="viewmodel:MeasurableQuantitiesViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding ExportMeasurableQuantitiesCommand}" IconImageSource="tab_export.png" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ScrollView Grid.Row="0">
+            <CollectionView
+                Margin="5"
+                ItemsSource="{Binding MeasurableQuantities}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type viewmodel:MeasurableQuantityViewModel}">
+                        <Border Style="{StaticResource card}">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MeasurableQuantitiesViewModel}}, Path=GoToMeasurementsCommand}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <VerticalStackLayout>
+                                    <Label FontSize="Medium" Text="{Binding Name, StringFormat='{0}:'}" />
+                                    <Label
+                                        FontSize="Small"
+                                        IsVisible="{Binding Notes, Converter={conv:EmptyStringToBooleanConverter}}"
+                                        Text="{Binding Notes}" />
+                                </VerticalStackLayout>
+
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="Medium"
+                                    IsVisible="{Binding IsNotPercentageQuantity}"
+                                    Text="{Binding LatestMeasurement.Value, StringFormat='{0}'}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="Medium"
+                                    IsVisible="{Binding IsPercentageQuantity}"
+                                    Text="{Binding LatestMeasurement.Value, StringFormat='{0} % '}" />
+                            </HorizontalStackLayout>
+
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+        <Button Command="{Binding GoToAddMeasurableQuantityCommand}" Style="{StaticResource floatingAddButton}" />
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.MeasurableQuantities.AddMeasurementPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+    Title="{Binding MeasurableQuantity.Name}"
+    x:DataType="viewmodel:AddMeasurementViewModel">
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Border Style="{StaticResource card}">
+        <VerticalStackLayout Margin="10,10" Spacing="10">
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="{Binding MeasurableQuantity.Name}" />
+            <HorizontalStackLayout Padding="3,10" Spacing="10">
+                <Editor
+                    BackgroundColor="Transparent"
+                    FontSize="Large"
+                    HeightRequest="50"
+                    HorizontalTextAlignment="Center"
+                    InputTransparent="False"
+                    Keyboard="Numeric"
+                    Text="{Binding Value}"
+                    WidthRequest="300" />
+                <Label Text="{Binding MeasurementUnitString}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="Date" />
+            <DatePicker Date="{Binding Date}" FontSize="Medium" />
+            <Button Command="{Binding AddImageCommand}" Text="Add Image" />
+            <Image
+                HeightRequest="300"
+                Source="{Binding Image, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                WidthRequest="300" />
+            <HorizontalStackLayout HorizontalOptions="End" Spacing="50">
+                <Button Command="{Binding CancelCommand}" Text="Cancel" />
+                <Button Command="{Binding ConfirmCommand}" Text="Confirm" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

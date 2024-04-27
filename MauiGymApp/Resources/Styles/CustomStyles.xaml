@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="MauiGymApp.CustomStyles"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+
+    <Style x:Key="floatingAddButton" TargetType="Button">
+        <Setter Property="Grid.Row" Value="0" />
+        <Setter Property="HeightRequest" Value="80" />
+        <Setter Property="WidthRequest" Value="80" />
+        <Setter Property="FontSize" Value="60" />
+        <Setter Property="Text" Value="+" />
+        <Setter Property="CornerRadius" Value="40" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="End" />
+        <Setter Property="IsEnabled" Value="True" />
+        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        <Setter Property="BorderWidth" Value="2" />
+        <Setter Property="Padding" Value="0,0,0,2" />
+    </Style>
+
+    <Style x:Key="titleViewButton" TargetType="ImageButton">
+        <Setter Property="HeightRequest" Value="20" />
+        <Setter Property="WidthRequest" Value="20" />
+    </Style>
+
+    <Style x:Key="card" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Gray950}" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="MinimumHeightRequest" Value="45" />
+        <Setter Property="MinimumWidthRequest" Value="320" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
+
+    <Style x:Key="editorFieldLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="Caption" />
+    </Style>
+
+    <Style x:Key="dateIncrementorButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontSize" Value="40" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+    </Style>
+
+    <Style x:Key="incrementorButton" TargetType="Button">
+        <Setter Property="HeightRequest" Value="25" />
+        <Setter Property="WidthRequest" Value="25" />
+        <Setter Property="CornerRadius" Value="40" />
+    </Style>
+
+    <Style x:Key="dgCrementorButton" TargetType="Button">
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <Style x:Key="EnabledTab" TargetType="Button" />
+
+    <Style x:Key="DisabledTab" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+    </Style>
+
+</ResourceDictionary>

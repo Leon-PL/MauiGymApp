@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="MauiGymApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:hview="clr-namespace:MauiGymApp.Views.Home"
+    xmlns:local="clr-namespace:MauiGymApp"
+    xmlns:mview="clr-namespace:MauiGymApp.Views.MeasurableQuantities"
+    xmlns:view="clr-namespace:MauiGymApp.Views"
+    Title="MauiGymApp"
+    Background="{StaticResource Primary}"
+    BackgroundColor="{StaticResource Primary}"
+    FlyoutBehavior="{OnIdiom Phone=Disabled,
+                             Default=Locked}"
+    Shell.TabBarBackgroundColor="{StaticResource Black}"
+    Shell.TabBarForegroundColor="{StaticResource Tertiary}">
+
+    <!--  Phone  -->
+    <TabBar x:Name="PhoneTabs">
+        <Tab Icon="tab_home.png">
+            <ShellContent ContentTemplate="{DataTemplate hview:HomePage}" />
+        </Tab>
+        <Tab Icon="tab_measuring_tape.png">
+            <ShellContent ContentTemplate="{DataTemplate mview:MeasurableQuantitiesPage}" />
+        </Tab>
+        <Tab Icon="tab_calculator.png">
+            <ShellContent ContentTemplate="{DataTemplate view:CalculatorPage}" />
+        </Tab>
+        <Tab Icon="tab_settings.png">
+            <ShellContent ContentTemplate="{DataTemplate view:SettingsPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

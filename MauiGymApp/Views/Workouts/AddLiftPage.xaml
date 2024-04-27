@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.Workouts.AddLiftPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lviewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts.Lifts"
+    x:DataType="lviewmodel:AddLiftViewModel">
+    <Border Style="{StaticResource card}">
+        <VerticalStackLayout Margin="10,10" Spacing="10">
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="Add Lift" />
+
+            <Editor
+                BackgroundColor="Transparent"
+                FontSize="Large"
+                HeightRequest="50"
+                HorizontalTextAlignment="Center"
+                InputTransparent="False"
+                Keyboard="Text"
+                Text="{Binding Name}"
+                WidthRequest="300" />
+            <Line BackgroundColor="White" />
+
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="Movement Pattern" />
+            <Picker
+                FontSize="Medium"
+                ItemsSource="{Binding MovementPatternPickerOptions}"
+                SelectedItem="{Binding SelectedMovementPattern}" />
+
+            <HorizontalStackLayout HorizontalOptions="End" Spacing="50">
+                <Button Command="{Binding CancelCommand}" Text="Cancel" />
+                <Button Command="{Binding ConfirmCommand}" Text="Confirm" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.MeasurableQuantities.MeasurementsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:MauiGymApp.Converters"
+    xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+    xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+    Title="{Binding MeasurableQuantity.Name}"
+    x:DataType="viewmodel:MeasurementsViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding OpenActionSheetCommand}" Text="⋮"  />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Margin="20" Spacing="10">
+                <lvc:CartesianChart
+                    HeightRequest="250"
+                    HorizontalOptions="Start"
+                    Series="{Binding Series}"
+                    WidthRequest="380"
+                    XAxes="{Binding XAxes}"
+                    YAxes="{Binding YAxes}" />
+
+                <Border Style="{StaticResource card}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenAddGoalCommand}" />
+                    </Border.GestureRecognizers>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="10*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <dxco:DXPopup
+                            AllowShadow="True"
+                            IsOpen="{Binding IsGoalPromptOpen}"
+                            ShadowRadius="5">
+                            <VerticalStackLayout BackgroundColor="{StaticResource PopupBackground}" WidthRequest="300">
+                                <Label FontSize="Medium" Text="Add Goal" />
+                                <HorizontalStackLayout Padding="3,10" Spacing="10">
+                                    <Editor
+                                        BackgroundColor="Transparent"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding GoalEditorText}"
+                                        TextColor="White"
+                                        WidthRequest="150" />
+                                    <Label Text="{Binding MeasurementUnitString}" VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                                <Button Command="{Binding AddGoalCommand}" Text="Confirm" />
+                            </VerticalStackLayout>
+                        </dxco:DXPopup>
+
+                        <VerticalStackLayout
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Start">
+                            <Label HorizontalOptions="Center" Text="Earliest" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsNotPercentageQuantity}"
+                                Text="{Binding MeasurableQuantity.FirstMeasurement.Value}" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsPercentageQuantity}"
+                                Text="{Binding MeasurableQuantity.FirstMeasurement.Value, StringFormat='{0} % '}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            HorizontalOptions="Fill"
+                            IsVisible="{Binding HasGoal}"
+                            VerticalOptions="Start">
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="False"
+                                Text="Trend" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="False"
+                                Text="0.8kg / day" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Start">
+                            <Label HorizontalOptions="Center" Text="Latest" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsNotPercentageQuantity}"
+                                Text="{Binding MeasurableQuantity.LatestMeasurement.Value}" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsPercentageQuantity}"
+                                Text="{Binding MeasurableQuantity.LatestMeasurement.Value, StringFormat='{0} % '}" />
+                        </VerticalStackLayout>
+
+                        <ProgressBar
+                            Grid.Row="1"
+                            Grid.ColumnSpan="3"
+                            Progress="{Binding GoalProgress.Progress}"
+                            ProgressColor="{StaticResource Primary}" />
+
+                        <VerticalStackLayout
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="End">
+                            <Label HorizontalOptions="Center" Text="Goal" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsNotPercentageQuantity}"
+                                Text="{Binding GoalString, StringFormat='{}{0:N2}', TargetNullValue='N/A'}" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsPercentageQuantity}"
+                                Text="{Binding GoalString, StringFormat='{}{0:N2} %'}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="End">
+                            <Label HorizontalOptions="Center" Text="Progress" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding HasGoal}"
+                                Text="{Binding GoalProgress.Progress, StringFormat='{}{0:N1} %', TargetNullValue='N/A', Converter={conv:DoubleToPercentageConverter}}" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="End">
+                            <Label HorizontalOptions="Center" Text="Remaining" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsNotPercentageQuantity}"
+                                Text="{Binding RemainingString, TargetNullValue='N/A'}" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding MeasurableQuantity.IsPercentageQuantity}"
+                                Text="{Binding RemainingString, StringFormat='{0} % '}" />
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Border>
+
+                <HorizontalStackLayout>
+                    <Label
+                        FontAttributes="Bold"
+                        HorizontalOptions="Start"
+                        Text="History" />
+                </HorizontalStackLayout>
+
+                <dxcv:DXCollectionView ItemsSource="{Binding MeasurementDifferentials}" SelectionMode="None">
+                    <dxcv:DXCollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodel:MeasurementDifferentialViewModel">
+                            <SwipeView>
+                                <SwipeView.LeftItems>
+                                    <SwipeItem
+                                        BackgroundColor="Crimson"
+                                        IconImageSource="delete.png"
+                                        Invoked="Delete_SwipeItem_Invoked" />
+                                </SwipeView.LeftItems>
+
+                                <Border Style="{StaticResource card}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:MeasurementsViewModel}}, Path=GoToEditMeasurementCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="7*" />
+                                            <ColumnDefinition Width="3*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <HorizontalStackLayout Padding="20,0,0,0" VerticalOptions="Center">
+                                            <Label
+                                                FontSize="Large"
+                                                IsVisible="{Binding IsNotPercentageQuantity}"
+                                                Text="{Binding Value}" />
+                                            <Label
+                                                FontSize="Large"
+                                                IsVisible="{Binding IsPercentageQuantity}"
+                                                Text="{Binding Value, StringFormat='{0} % '}" />
+                                        </HorizontalStackLayout>
+
+                                        <VerticalStackLayout
+                                            Grid.Column="1"
+                                            HorizontalOptions="End"
+                                            Spacing="10">
+                                            <HorizontalStackLayout>
+                                                <Label Text="{Binding DateTime, StringFormat='{0:dd MMM, yyyy}'}" />
+                                                <Label Text="  &gt;" />
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Image
+                                                    HeightRequest="25"
+                                                    Source="{Binding Differential, Converter={conv:DoubleToTrendIconConverter}}"
+                                                    WidthRequest="25" />
+                                                <Label IsVisible="{Binding IsNotPercentageQuantity}" Text="{Binding Differential}" />
+                                                <Label IsVisible="{Binding ShowPercentage}" Text="{Binding Differential, StringFormat='{0} % '}" />
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </dxcv:DXCollectionView.ItemTemplate>
+                </dxcv:DXCollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Button Command="{Binding GoToAddMeasurementCommand}" Style="{StaticResource floatingAddButton}" />
+    </Grid>
+</ContentPage>

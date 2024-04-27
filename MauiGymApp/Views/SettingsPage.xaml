@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels"
+    Title="Settings"
+    x:DataType="viewmodel:SettingsViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <ScrollView Margin="10" WidthRequest="600">
+        <VerticalStackLayout HorizontalOptions="Center" Spacing="20">
+            <Border Style="{StaticResource card}">
+                <VerticalStackLayout Margin="0,0,0,10" Spacing="6">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        Text="Units" />
+                    <Line BackgroundColor="White" />
+                    <HorizontalStackLayout Spacing="20">
+                        <Label Text="Mass" VerticalOptions="Center" />
+                        <VerticalStackLayout Spacing="-5">
+                            <Picker
+                                Title="Select Mass Unit"
+                                SelectedItem="{Binding PreferredMassUnit}"
+                                WidthRequest="200">
+                                <Picker.Items>
+                                    <x:String>Kilograms</x:String>
+                                    <x:String>Pounds</x:String>
+                                </Picker.Items>
+                            </Picker>
+                            <Line BackgroundColor="{StaticResource Primary}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="Length" VerticalOptions="Center" />
+                        <VerticalStackLayout Spacing="-5">
+                            <Picker
+                                Title="Select Length Unit"
+                                SelectedItem="{Binding PreferredLengthUnit}"
+                                WidthRequest="200">
+                                <Picker.Items>
+                                    <x:String>Metres</x:String>
+                                    <x:String>Centimetres</x:String>
+                                    <x:String>Inches</x:String>
+                                </Picker.Items>
+                            </Picker>
+                            <Line BackgroundColor="{StaticResource Primary}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource card}">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="Large"
+                            HorizontalOptions="Start"
+                            Text="One Rep Max Functions" />
+                        <Button
+                            Padding="-5"
+                            Command="{Binding GoTo1RMEquationsOerviewCommand}"
+                            FontAttributes="Bold"
+                            HeightRequest="30"
+                            HorizontalOptions="End"
+                            Text="&gt;"
+                            WidthRequest="40" />
+                    </HorizontalStackLayout>
+
+                    <Line BackgroundColor="White" />
+                    <HorizontalStackLayout>
+                        <Switch IsToggled="{Binding UseEpley}" />
+                        <Label Margin="15,13,0,0" Text="Epley" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Switch IsToggled="{Binding UseBryzcki}" />
+                        <Label Margin="15,13,0,0" Text="Bryzcki" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Switch IsToggled="{Binding UseLombardi}" />
+                        <Label Margin="15,13,0,0" Text="Lombardi" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Switch IsToggled="{Binding UseMayhew}" />
+                        <Label Margin="15,13,0,0" Text="Mayhew" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Switch IsToggled="{Binding UseOConnor}" />
+                        <Label Margin="15,13,0,0" Text="OConnor" />
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Switch IsToggled="{Binding UseWathan}" />
+                        <Label Margin="15,13,0,0" Text="Wathan" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource card}">
+                <VerticalStackLayout Spacing="10">
+                    <Label FontSize="Large" Text="Data" />
+                    <Button Command="{Binding ImportDataCommand}" Text="Import Data" />
+                    <Line BackgroundColor="White" />
+                    <Button Command="{Binding DeleteAllDataCommand}" Text="Delete All Data" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

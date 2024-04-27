@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiGymApp.Views.MeasurableQuantities.AddMeasurableQuantityPage"
+             xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+             x:DataType="viewmodel:AddMeasurableQuantityViewModel"
+             Title="AddMeasurableQuantityPage">
+
+    <Border Style="{StaticResource card}">
+
+        <VerticalStackLayout HorizontalOptions="Center" Spacing="15">
+            <Label FontSize="Large" Text="Add Measurement" />
+            <Editor
+            HorizontalTextAlignment="Center"
+            InputTransparent="False"
+            Placeholder="e.g Body Fat %"  
+            Text="{Binding Name}" />
+            <Picker
+            HorizontalOptions="Center"
+            SelectedItem="{Binding SelectedQuantityType}"
+            WidthRequest="300">
+                <Picker.Items>
+                    <x:String>Mass</x:String>
+                    <x:String>Length</x:String>
+                    <x:String>Time</x:String>
+                    <x:String>Percentage</x:String>
+                </Picker.Items>
+            </Picker>
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="50">
+                <Button Command="{Binding CancelCommand}" Text="Cancel" />
+                <Button
+                Command="{Binding ConfirmCommand}"
+                IsEnabled="{Binding IsNameNotEmpty}"
+                Text="Confirm" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+    
+</ContentPage>

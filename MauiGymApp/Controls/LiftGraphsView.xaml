@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MauiGymApp.Controls.LiftGraphsView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:MauiGymApp.Converters"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    xmlns:lviewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts.Lifts"
+    x:DataType="lviewmodel:LiftGraphsViewModel">
+
+    <VerticalStackLayout Margin="10" Spacing="5">
+        <Picker SelectedItem="{Binding SelectedGraphTypeString}">
+            <Picker.Items>
+                <x:String>Estimated One Rep Max</x:String>
+                <x:String>Achieved One Rep Max</x:String>
+                <x:String>Volume</x:String>
+            </Picker.Items>
+        </Picker>
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+            <RadioButton Content="1m" />
+            <RadioButton Content="3m" />
+            <RadioButton Content="6m" />
+            <RadioButton Content="1y" />
+        </HorizontalStackLayout>
+        <lvc:CartesianChart
+            HeightRequest="350"
+            HorizontalOptions="Center"
+            Series="{Binding Series}"
+            WidthRequest="360"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}" />
+        <!--<Border
+         Padding="10,7"
+         Background="#36454F"
+         HeightRequest="130"
+         HorizontalOptions="Center"
+         StrokeShape="RoundRectangle 10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <VerticalStackLayout
+                 Grid.Row="0"
+                 Grid.Column="0"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="Start">
+                    <Label HorizontalOptions="Center" Text="Earliest" />
+                    <Label HorizontalOptions="Center" Text="Earliest" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 HorizontalOptions="Fill"
+                 IsVisible="{Binding HasGoal}"
+                 VerticalOptions="Start">
+                    <Label
+                     HorizontalOptions="Center"
+                     IsVisible="False"
+                     Text="Trend" />
+                    <Label
+                     HorizontalOptions="Center"
+                     IsVisible="False"
+                     Text="0.8kg / day" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                 Grid.Row="0"
+                 Grid.Column="2"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="Start">
+                    <Label HorizontalOptions="Center" Text="Latest" />
+                    <Label HorizontalOptions="Center" Text="Latest" />
+                </VerticalStackLayout>
+
+                <ProgressBar
+                 Grid.Row="1"
+                 Grid.ColumnSpan="3"
+                 Progress="{Binding GoalProgress.Progress}"
+                 ProgressColor="{StaticResource Primary}" />
+
+                <VerticalStackLayout
+                 Grid.Row="2"
+                 Grid.Column="0"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="End">
+                    <Label HorizontalOptions="Center" Text="Goal" />
+                    <Label HorizontalOptions="Center" Text="Goal" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="End">
+                    <Label HorizontalOptions="Center" Text="Progress" />
+                    <Label
+                     HorizontalOptions="Center"
+                     IsVisible="{Binding HasGoal}"
+                     Text="{Binding GoalProgress.Progress, StringFormat='{}{0:N1} %', TargetNullValue='N/A', Converter={conv:DoubleToPercentageConverter}}" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
+                 Grid.Row="2"
+                 Grid.Column="2"
+                 HorizontalOptions="Fill"
+                 VerticalOptions="End">
+                    <Label HorizontalOptions="Center" Text="Remaining" />
+                    <Label HorizontalOptions="Center" Text="Remaining" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>-->
+    </VerticalStackLayout>
+</ContentView>

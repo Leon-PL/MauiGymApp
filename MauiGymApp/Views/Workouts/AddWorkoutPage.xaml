@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.Workouts.AddWorkoutPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:con="clr-namespace:MauiGymApp.Controls"
+    xmlns:conv="clr-namespace:MauiGymApp.Converters"
+    xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+    xmlns:lviewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts.Lifts"
+    xmlns:view="clr-namespace:MauiGymApp.Controls"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts"
+    x:DataType="viewmodel:AddWorkoutViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*, Auto">
+            <HorizontalStackLayout>
+                <Editor
+                    FontAttributes="Bold"
+                    FontSize="Title"
+                    IsEnabled="{Binding NotInEditMode}"
+                    IsReadOnly="True"
+                    IsVisible="{Binding NotInEditMode}"
+                    Text="{Binding SelectedRoutine.Name}"
+                    VerticalOptions="Center">
+                    <Editor.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenRoutineSelectionCommand}" />
+                        <TapGestureRecognizer Command="{Binding OpenRoutineSelectionCommand}" />
+                    </Editor.GestureRecognizers>
+                </Editor>
+                <Editor
+                    FontAttributes="Bold"
+                    FontSize="Title"
+                    IsEnabled="{Binding InEditMode}"
+                    IsVisible="{Binding InEditMode}"
+                    Text="{Binding SelectedRoutine.Name}"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout
+                Grid.Column="1"
+                Padding="0,0,15,0"
+                Spacing="20">
+                <ImageButton
+                    Command="{Binding AddRoutineCommand}"
+                    Source="plus.png"
+                    Style="{StaticResource titleViewButton}" />
+                <ImageButton
+                    Command="{Binding ToggleEditModeCommand}"
+                    Source="{Binding InEditMode, Converter={conv:BoolToEditIconConverter}}"
+                    Style="{StaticResource titleViewButton}" />
+                <ImageButton
+                    Command="{Binding DeleteRoutineCommand}"
+                    CommandParameter="{Binding SelectedRoutine}"
+                    Source="delete.png"
+                    Style="{StaticResource titleViewButton}" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Shell.TitleView>
+
+    <ContentView>
+        <ContentView.Triggers>
+            <DataTrigger
+                Binding="{Binding AllLiftsSelected}"
+                TargetType="ContentView"
+                Value="True">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <view:AllLifts
+                            ConfirmCommand="{Binding LiftsPageViewModel.ConfirmCommand}"
+                            InSelectionMode="true"
+                            LiftsSource="{Binding LiftsPageViewModel.SearchFilteredLifts}"
+                            MoreCommand="{Binding LiftsPageViewModel.OpenLiftActionSheetCommand}"
+                            PickerOptions="{Binding LiftsPageViewModel.PickerOptions}"
+                            SearchText="{Binding LiftsPageViewModel.SearchText}"
+                            SelectedLifts="{Binding LiftsPageViewModel.SelectedLifts}"
+                            SelectedLiftsChangedCommand="{Binding LiftsPageViewModel.SelectedLiftsChangedCommand}"
+                            SelectedPickerOption="{Binding LiftsPageViewModel.SelectedPatternText}"
+                            ShowConfirmButton="{Binding LiftsPageViewModel.ShowConfirmButton}" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </ContentView.Triggers>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ScrollView Grid.Row="0">
+                <CollectionView Margin="10" ItemsSource="{Binding SelectedRoutine.WorkoutTemplates}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodel:WorkoutTemplateViewModel">
+                            <Border Style="{StaticResource card}">
+                                <VerticalStackLayout>
+                                    <Grid Padding="10,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label
+                                            Grid.Column="0"
+                                            FontSize="Medium"
+                                            HorizontalOptions="Start"
+                                            Text="{Binding Name}"
+                                            VerticalOptions="Center" />
+                                        <HorizontalStackLayout Grid.Column="1">
+                                            <Button
+                                                Padding="-5"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=SetAllLiftsSelectedCommand}"
+                                                CommandParameter="{Binding .}"
+                                                FontAttributes="Bold"
+                                                HeightRequest="30"
+                                                HorizontalOptions="End"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=InEditMode}"
+                                                Text="+"
+                                                WidthRequest="30" />
+                                            <Button
+                                                Padding="10,-10,10,-10"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=SelectWorkoutTemplateCommand}"
+                                                CommandParameter="{Binding .}"
+                                                HeightRequest="30"
+                                                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=NotInEditMode}"
+                                                Text="Select Workout" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
+                                    <CollectionView ItemsSource="{Binding LiftWorkoutTemplates}">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="lviewmodel:LiftWorkoutTemplateViewModel">
+                                                <Border
+                                                    Stroke="White"
+                                                    StrokeShape="RoundRectangle 10"
+                                                    StrokeThickness="2">
+                                                    <VerticalStackLayout>
+                                                        <Grid Padding="10,5">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="auto" />
+                                                                <RowDefinition Height="*" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Label
+                                                                Grid.Column="0"
+                                                                FontSize="Body"
+                                                                Text="{Binding Lift.Name}"
+                                                                TextColor="White" />
+
+                                                            <HorizontalStackLayout Grid.Column="1" Spacing="3">
+                                                                <Button
+                                                                    Padding="-5"
+                                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=AddSetTemplateCommand}"
+                                                                    CommandParameter="{Binding .}"
+                                                                    HeightRequest="30"
+                                                                    IsVisible="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=InEditMode}"
+                                                                    Text="+"
+                                                                    WidthRequest="30" />
+                                                                <Button
+                                                                    Padding="-5"
+                                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AddWorkoutViewModel}}, Path=GoToLiftCommand}"
+                                                                    CommandParameter="{Binding Lift}"
+                                                                    FontAttributes="Bold"
+                                                                    FontSize="Large"
+                                                                    HeightRequest="30"
+                                                                    Text="⋮"
+                                                                    WidthRequest="30" />
+                                                            </HorizontalStackLayout>
+
+                                                            <VerticalStackLayout Grid.Row="1">
+                                                                <CollectionView ItemsSource="{Binding SetTemplates}">
+                                                                    <CollectionView.ItemTemplate>
+                                                                        <DataTemplate x:DataType="viewmodel:SetTemplateViewModel">
+                                                                            <Grid ColumnSpacing="30">
+                                                                                <Grid.ColumnDefinitions>
+                                                                                    <ColumnDefinition Width="auto" />
+                                                                                    <ColumnDefinition Width="*" />
+                                                                                    <ColumnDefinition Width="*" />
+                                                                                </Grid.ColumnDefinitions>
+
+                                                                                <Label Text="{Binding Name}" />
+                                                                                <HorizontalStackLayout Grid.Column="1" Spacing="2">
+                                                                                    <Button
+                                                                                        Command="{Binding DecrementRepsCommand}"
+                                                                                        Style="{StaticResource incrementorButton}"
+                                                                                        Text="-" />
+                                                                                    <Label Text="Reps: " />
+                                                                                    <Label Text="{Binding PrescribedReps, StringFormat='{}{k}'}" />
+                                                                                    <Button
+                                                                                        Command="{Binding IncrementRepsCommand}"
+                                                                                        Style="{StaticResource incrementorButton}"
+                                                                                        Text="+" />
+                                                                                </HorizontalStackLayout>
+                                                                                <HorizontalStackLayout Grid.Column="2" Spacing="2">
+                                                                                    <Button
+                                                                                        Command="{Binding DecrementRIRCommand}"
+                                                                                        Style="{StaticResource incrementorButton}"
+                                                                                        Text="-" />
+                                                                                    <Label Text="RIR: " />
+                                                                                    <Label Text="{Binding PrescribedRIR, StringFormat='{}{k}'}" />
+                                                                                    <Button
+                                                                                        Command="{Binding IncrementRIRCommand}"
+                                                                                        Style="{StaticResource incrementorButton}"
+                                                                                        Text="+" />
+                                                                                </HorizontalStackLayout>
+                                                                            </Grid>
+                                                                        </DataTemplate>
+                                                                    </CollectionView.ItemTemplate>
+                                                                </CollectionView>
+                                                            </VerticalStackLayout>
+                                                        </Grid>
+                                                    </VerticalStackLayout>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+
+            <Button
+                Command="{Binding AddWorkoutTemplateCommand}"
+                CommandParameter="{Binding SelectedRoutine}"
+                Style="{StaticResource floatingAddButton}" />
+
+        </Grid>
+    </ContentView>
+
+
+
+
+</ContentPage>

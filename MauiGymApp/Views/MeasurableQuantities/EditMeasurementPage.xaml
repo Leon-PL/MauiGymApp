@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.MeasurableQuantities.EditMeasurementPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+    Title="{Binding MeasurableQuantity.Name}"
+    x:DataType="viewmodel:EditMeasurementViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Border Style="{StaticResource card}">
+        <VerticalStackLayout Spacing="10">
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="{Binding MeasurableQuantity.Name}" />
+            <HorizontalStackLayout Padding="3,10" Spacing="10">
+                <Editor
+                    BackgroundColor="Transparent"
+                    FontSize="Large"
+                    HeightRequest="50"
+                    HorizontalTextAlignment="End"
+                    InputTransparent="False"
+                    Text="{Binding Value}" />
+                <Label
+                    Text="{Binding MeasurementUnitString}"
+                    TextColor="AliceBlue"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                Text="Date" />
+            <DatePicker Date="{Binding Date}" FontSize="Medium" />
+            <ImageButton
+                Command="{Binding AddImageCommand}"
+                HeightRequest="300"
+                IsVisible="{Binding Measurement.HasImage}"
+                Source="{Binding Image, Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                WidthRequest="300" />
+            <HorizontalStackLayout HorizontalOptions="End" Spacing="50">
+                <Button
+                    Command="{Binding DeleteMeasurementCommand}"
+                    HorizontalOptions="End"
+                    Text="Delete" />
+                <Button Command="{Binding CloseCommand}" Text="Cancel" />
+                <Button Command="{Binding ConfirmCommand}" Text="Confirm" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

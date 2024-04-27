@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.Stats.StatsOverviewPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.Stats"
+    xmlns:views="clr-namespace:MauiGymApp.Views.Stats"
+    Title="Statistics"
+    x:DataType="viewmodel:StatsOverviewViewModel">
+
+
+    <Grid ColumnDefinitions="*, *" RowDefinitions="Auto,*">
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            BorderColor="{StaticResource Primary}"
+            Command="{Binding SelectItemCommand}"
+            CommandParameter="1"
+            CornerRadius="0"
+            FontAttributes="Bold"
+            HorizontalOptions="FillAndExpand"
+            Style="{StaticResource DisabledTab}"
+            Text="Workouts"
+            VerticalOptions="Center">
+            <Button.Triggers>
+                <DataTrigger
+                    Binding="{Binding SelectedTab}"
+                    TargetType="Button"
+                    Value="1">
+                    <Setter Property="Style" Value="{StaticResource EnabledTab}" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+        <Button
+            Grid.Row="0"
+            Grid.Column="1"
+            Command="{Binding SelectItemCommand}"
+            CommandParameter="2"
+            CornerRadius="0"
+            FontAttributes="Bold"
+            HorizontalOptions="FillAndExpand"
+            Style="{StaticResource DisabledTab}"
+            Text="Lifts"
+            VerticalOptions="Center">
+            <Button.Triggers>
+                <DataTrigger
+                    Binding="{Binding SelectedTab}"
+                    TargetType="Button"
+                    Value="2">
+                    <Setter Property="Style" Value="{StaticResource EnabledTab}" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+
+        <ContentView Grid.Row="1" Grid.ColumnSpan="2">
+            <ContentView.Triggers>
+                <DataTrigger
+                    Binding="{Binding SelectedTab}"
+                    TargetType="ContentView"
+                    Value="1">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <views:WorkoutStatsView BindingContext="{Binding WorkoutStatsViewModel}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </ContentView.Triggers>
+            <views:MovementPatternStatsView BindingContext="{Binding MovementPatternStatsViewModel}" />
+        </ContentView>
+    </Grid>
+</ContentPage>

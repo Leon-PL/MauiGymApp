@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.CalculatorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:conv="clr-namespace:MauiGymApp.Converters"
+    xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+    xmlns:mviewmodel="clr-namespace:MauiGymApp.ViewModels.MeasurableQuantities"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.Calculator"
+    Title="CalculatorPage"
+    x:DataType="viewmodel:CalculatorViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <VerticalStackLayout Margin="10,10" Spacing="15">
+        <Border Style="{StaticResource card}">
+            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label
+                    FontSize="18"
+                    HorizontalOptions="Center"
+                    Text="Weight" />
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Button
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="2"
+                        Command="{Binding DecrementWeightCommand}"
+                        CornerRadius="50"
+                        HeightRequest="50"
+                        IsEnabled="True"
+                        IsVisible="True"
+                        Text="-"
+                        WidthRequest="50" />
+                    <Editor
+                        FontSize="Large"
+                        HeightRequest="50"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding Weight}"
+                        WidthRequest="150" />
+                    <Button
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="2"
+                        Command="{Binding IncrementWeightCommand}"
+                        CornerRadius="50"
+                        HeightRequest="50"
+                        Text="+"
+                        WidthRequest="50" />
+                </HorizontalStackLayout>
+
+                <Label
+                    FontSize="18"
+                    HorizontalOptions="Center"
+                    Text="Reps" />
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="10">
+                    <Button
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="2"
+                        Command="{Binding DecrementRepsCommand}"
+                        CornerRadius="50"
+                        HeightRequest="50"
+                        Text="-"
+                        WidthRequest="50" />
+                    <Editor
+                        FontSize="Large"
+                        HeightRequest="50"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding Reps}"
+                        WidthRequest="150" />
+                    <Button
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="2"
+                        Command="{Binding IncrementRepsCommand}"
+                        CornerRadius="50"
+                        HeightRequest="50"
+                        Text="+"
+                        WidthRequest="50" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <Border Style="{StaticResource card}">
+            <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                <Label
+                    FontSize="18"
+                    HorizontalTextAlignment="Center"
+                    Text="One Rep Max Table" />
+                <Line BackgroundColor="White" />
+                <HorizontalStackLayout
+                    Padding="8,6"
+                    HorizontalOptions="CenterAndExpand"
+                    Spacing="50">
+                    <HorizontalStackLayout Spacing="10">
+                        <VerticalStackLayout>
+                            <Label Text="1RM: " />
+                            <Label Text="2RM: " />
+                            <Label Text="3RM: " />
+                            <Label Text="4RM: " />
+                            <Label Text="5RM: " />
+                            <Label Text="6RM: " />
+                            <Label Text="7RM: " />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding FormattedResults[1]}" />
+                            <Label Text="{Binding FormattedResults[2]}" />
+                            <Label Text="{Binding FormattedResults[3]}" />
+                            <Label Text="{Binding FormattedResults[4]}" />
+                            <Label Text="{Binding FormattedResults[5]}" />
+                            <Label Text="{Binding FormattedResults[6]}" />
+                            <Label Text="{Binding FormattedResults[7]}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <VerticalStackLayout>
+                            <Label Text="8RM: " />
+                            <Label Text="9RM: " />
+                            <Label Text="10RM: " />
+                            <Label Text="11RM: " />
+                            <Label Text="12RM: " />
+                            <Label Text="13RM: " />
+                            <Label Text="14RM: " />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding FormattedResults[8]}" />
+                            <Label Text="{Binding FormattedResults[9]}" />
+                            <Label Text="{Binding FormattedResults[10]}" />
+                            <Label Text="{Binding FormattedResults[11]}" />
+                            <Label Text="{Binding FormattedResults[12]}" />
+                            <Label Text="{Binding FormattedResults[13]}" />
+                            <Label Text="{Binding FormattedResults[14]}" />
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <dxco:DXPopup
+            AllowShadow="True"
+            IsOpen="{Binding IsSelectBodyWeightQuantityPromptOpen}"
+            ShadowRadius="5">
+            <Border
+                Padding="10"
+                BackgroundColor="{StaticResource PopupBackground}"
+                StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        Text="Select Measurement" />
+                    <CollectionView
+                        BackgroundColor="Red"
+                        HeightRequest="300"
+                        ItemsSource="{Binding MassQuantities}"
+                        WidthRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="mviewmodel:MeasurableQuantityViewModel">
+                                <HorizontalStackLayout BackgroundColor="Red">
+                                    <Label
+                                        FontSize="Large"
+                                        Text="{Binding Name}"
+                                        TextColor="White" />
+                                    <Label FontSize="Large" Text="{Binding LatestMeasurement.Value}" />
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+        </dxco:DXPopup>
+
+        <dxco:DXPopup
+            AllowShadow="True"
+            IsOpen="{Binding IsSetBodyWeightPromptOpen}"
+            ShadowRadius="5">
+            <VerticalStackLayout BackgroundColor="{StaticResource PopupBackground}" WidthRequest="300">
+                <Label FontSize="Medium" Text="Enter Body Weight" />
+                <HorizontalStackLayout Padding="3,10" Spacing="10">
+                    <Editor
+                        BackgroundColor="Transparent"
+                        HorizontalTextAlignment="End"
+                        Keyboard="Numeric"
+                        Text="{Binding BodyWeightEditorText}"
+                        TextColor="White"
+                        WidthRequest="150" />
+                    <Label Text="{Binding BodyWeightUnitString}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <Button Command="{Binding SetBodyWeightCommand}" Text="Confirm" />
+            </VerticalStackLayout>
+        </dxco:DXPopup>
+
+        <Border Style="{StaticResource card}">
+            <VerticalStackLayout Spacing="4">
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label FontSize="18" Text="Wilks Score: " />
+                    <Label FontSize="18" Text="{Binding WilksScore, StringFormat='{0:F2}'}" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="50"
+                    VerticalOptions="Center">
+                    <Button
+                        BorderColor="{StaticResource Primary}"
+                        BorderWidth="2"
+                        Command="{Binding OpenActionSheetCommand}"
+                        HeightRequest="50"
+                        Text="{Binding BodyWeight}"
+                        WidthRequest="95" />
+                    <ImageButton
+                        Padding="40"
+                        BackgroundColor="{StaticResource Primary}"
+                        Command="{Binding ToggleGenderCommand}"
+                        CornerRadius="40"
+                        HeightRequest="80"
+                        Source="{Binding IsMale, Converter={conv:BoolToGenderIconConverter}}"
+                        WidthRequest="80" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentPage>

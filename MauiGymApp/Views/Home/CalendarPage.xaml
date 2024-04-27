@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.Home.CalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+    xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+    xmlns:lviewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts.Lifts"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels.Home"
+    xmlns:wviewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts"
+    x:Name="calendarPage"
+    Title="Calendar"
+    x:DataType="viewmodel:CalendarViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <Grid RowDefinitions="auto, *">
+        <controls:Calendar
+            x:Name="Calendar"
+            AnimateCalendar="True"
+            ArrowsBackgroundColor="Transparent"
+            ArrowsColor="{StaticResource Primary}"
+            ArrowsFontSize="40"
+            ArrowsSymbolNext="&gt;"
+            ArrowsSymbolPrev="&lt;"
+            CalendarLayout="Month"
+            CalendarSectionShown="True"
+            DaysTitleColor="White"
+            DeselectedDayTextColor="White"
+            DisabledDayColor="AliceBlue"
+            EventIndicatorColor="{StaticResource Primary}"
+            EventIndicatorSelectedColor="Blue"
+            Events="{Binding WorkoutEvents}"
+            Month="{Binding Month}"
+            MonthLabelColor="White"
+            OtherMonthDayColor="Gray"
+            SelectedDate="{Binding SelectedDate}"
+            SelectedDateColor="White"
+            SelectedDateTextFormat="ddd, dd MMM yyyy"
+            SelectedDayBackgroundColor="White"
+            SelectedDayTextColor="{StaticResource Primary}"
+            SelectedTodayTextColor="White"
+            ShowMonthPicker="True"
+            ShowYearPicker="False"
+            ShownDate="{Binding ShownDate}"
+            SwipeToChangeMonthEnabled="True"
+            TodayFillColor="{StaticResource Primary}"
+            TodayOutlineColor="White"
+            TodayTextColor="White"
+            Year="{Binding Year}"
+            YearLabelColor="Blue">
+
+            <controls:Calendar.HeaderSectionTemplate>
+                <DataTemplate>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="50">
+                        <Button
+                            Command="{Binding BindingContext.DecrementDateCommand, Source={x:Reference calendarPage}}"
+                            Style="{StaticResource dateIncrementorButton}"
+                            Text="&lt;" />
+                        <VerticalStackLayout
+                            Margin="0,-5,0,0"
+                            Spacing="-10"
+                            VerticalOptions="Center">
+
+                            <Label
+                                FontSize="Medium"
+                                HorizontalOptions="Center"
+                                Text="{Binding BindingContext.HeaderDateText, Source={x:Reference calendarPage}}" />
+                            <Line BackgroundColor="{StaticResource Primary}" />
+                        </VerticalStackLayout>
+                        <Button
+                            Command="{Binding BindingContext.IncrementDateCommand, Source={x:Reference calendarPage}}"
+                            Style="{StaticResource dateIncrementorButton}"
+                            Text="&gt;"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </DataTemplate>
+
+            </controls:Calendar.HeaderSectionTemplate>
+
+
+        </controls:Calendar>
+
+
+        <ContentView Grid.Row="1">
+            <ContentView.Triggers>
+                <DataTrigger
+                    Binding="{Binding IsWorkoutAvailable}"
+                    TargetType="ContentView"
+                    Value="true">
+                    <Setter Property="Content">
+                        <Setter.Value>
+
+                            <dxcv:DXCollectionView IsScrollBarVisible="True" ItemsSource="{Binding SelectedWorkout.LiftWorkouts}">
+                                <dxcv:DXCollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="lviewmodel:LiftWorkoutViewModel">
+                                        <VerticalStackLayout Margin="5">
+                                            <Label BackgroundColor="{StaticResource Primary}" Text="{Binding Lift.Name}" />
+                                            <dxcv:DXCollectionView ItemsSource="{Binding Sets}" ReduceSizeToContent="True">
+                                                <dxcv:DXCollectionView.ItemTemplate>
+                                                    <DataTemplate x:DataType="wviewmodel:SetViewModel">
+                                                        <HorizontalStackLayout Spacing="5">
+                                                            <Label Text="{Binding Weight}" />
+                                                            <Label Text="{Binding Reps, StringFormat='  {0} Reps'}" />
+                                                        </HorizontalStackLayout>
+                                                    </DataTemplate>
+                                                </dxcv:DXCollectionView.ItemTemplate>
+                                            </dxcv:DXCollectionView>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </dxcv:DXCollectionView.ItemTemplate>
+                            </dxcv:DXCollectionView>
+
+
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </ContentView.Triggers>
+        </ContentView>
+
+    </Grid>
+
+
+
+</ContentPage>

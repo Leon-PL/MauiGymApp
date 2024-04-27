@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiGymApp.Views.ORMEquationsOverviewPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodel="clr-namespace:MauiGymApp.ViewModels"
+    Title="1 Rep Max Equations"
+    x:DataType="viewmodel:ORMEquationsOverviewViewModel"
+    BackgroundColor="{StaticResource Gray950}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding GoToORMEquationsWikiCommand}" Text="?" />
+    </ContentPage.ToolbarItems>
+    <VerticalStackLayout>
+        <lvc:CartesianChart
+            Margin="20"
+            DrawMarginFrame="{Binding Frame}"
+            HorizontalOptions="CenterAndExpand"
+            MinimumHeightRequest="500"
+            Series="{Binding Series}"
+            TooltipPosition="Hidden"
+            XAxes="{Binding XAxes}"
+            YAxes="{Binding YAxes}"
+            ZoomMode="Both" />
+        <Border Padding="-1,0" Style="{StaticResource card}">
+            <Grid
+                ColumnDefinitions="*,*,*,*,*,*"
+                ColumnSpacing="-15"
+                RowDefinitions="*,*,*">
+                <CheckBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    IsChecked="{Binding EpleyActive}"
+                    Color="{Binding EpleyColour}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="Caption"
+                    Text="Epley"
+                    VerticalOptions="Center" />
+                <CheckBox
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    IsChecked="{Binding BryzckiActive}"
+                    Color="{Binding BryzckiColour}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    FontSize="Caption"
+                    Text="Bryzcki"
+                    VerticalOptions="Center" />
+                <CheckBox
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    IsChecked="{Binding LombardiActive}"
+                    Color="{Binding LombardiColour}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="5"
+                    FontSize="Caption"
+                    Text="Lombardi"
+                    VerticalOptions="Center" />
+
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IsChecked="{Binding MayhewActive}"
+                    Color="{Binding MayhewColour}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    FontSize="Caption"
+                    Text="Mayhew"
+                    VerticalOptions="Center" />
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    IsChecked="{Binding OConnorActive}"
+                    Color="{Binding OConnorColour}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    FontSize="Caption"
+                    Text="OConnor"
+                    VerticalOptions="Center" />
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    IsChecked="{Binding WathanActive}"
+                    Color="{Binding WathanColour}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    FontSize="Caption"
+                    Text="Wathan"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+    </VerticalStackLayout>
+
+
+</ContentPage>

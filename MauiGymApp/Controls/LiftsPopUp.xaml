@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="MauiGymApp.Controls.LiftsPopUp"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+    xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+    xmlns:lviewmodel="clr-namespace:MauiGymApp.ViewModels.Workouts.Lifts"
+    x:DataType="lviewmodel:LiftsPopUpViewModel">
+
+    <dxco:DXPopup
+        VerticalAlignment="Center"
+        AllowAnimation="True"
+        AllowShadow="True"
+        IsOpen="{Binding IsOpen}"
+        ShadowColor="{StaticResource Primary}"
+        ShadowRadius="10">
+        <Border
+            Margin="-10"
+            BackgroundColor="{StaticResource PopupBackground}"
+            HeightRequest="500"
+            Style="{StaticResource card}"
+            WidthRequest="300">
+            <VerticalStackLayout Margin="10" Spacing="10">
+                <HorizontalStackLayout Spacing="20">
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        Text="Lifts" />
+                    <Button
+                        Command="{Binding GoToAddLiftCommand}"
+                        CornerRadius="40"
+                        FontAttributes="Bold"
+                        FontSize="40"
+                        Text="+" />
+                </HorizontalStackLayout>
+
+                <CollectionView
+                    IsGrouped="True"
+                    ItemsSource="{Binding LiftGroups}"
+                    SelectedItems="{Binding SelectedLifts}"
+                    SelectionChangedCommand="{Binding}"
+                    SelectionMode="Multiple">
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate x:DataType="lviewmodel:LiftGroupViewModel">
+                            <HorizontalStackLayout Margin="10,0,0,0" BackgroundColor="{Binding GroupColor}">
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type lviewmodel:LiftsPopUpViewModel}}, Path=ToggleGroupExpandedCommand}" CommandParameter="{Binding .}" />
+                                </HorizontalStackLayout.GestureRecognizers>
+                                <Label FontSize="Medium" Text="{Binding Name}" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="lviewmodel:LiftViewModel">
+                            <VerticalStackLayout Margin="20,0,0,0">
+                                <Label Text="{Binding Name}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <HorizontalStackLayout HorizontalOptions="End" Spacing="50">
+                    <Button Command="{Binding CancelCommand}" Text="Cancel" />
+                    <Button Command="{Binding ConfirmCommand}" Text="Confirm" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+    </dxco:DXPopup>
+</ContentView>
