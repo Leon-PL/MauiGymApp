@@ -32,14 +32,19 @@ namespace MauiGymApp.Services.Visual
         public static async Task ShowSnackBar(string message, SnackBarType type,double durationSeconds=3)
         {
             var cancellationTokenSource = new CancellationTokenSource();
-
-            string actionButtonText = "X";
+             
+            //string actionButtonText = "X";
         
-            TimeSpan duration = TimeSpan.FromSeconds(durationSeconds);
+            //TimeSpan duration = TimeSpan.FromSeconds(durationSeconds);
 
-            var snackbar = Snackbar.Make(message, null, actionButtonText, duration, OptionsFromType(type));
+            //var snackbar = Snackbar.Make(message, null, actionButtonText, duration, OptionsFromType(type));
 
-            await snackbar.Show(cancellationTokenSource.Token);
+            //await snackbar.Show(cancellationTokenSource.Token);
+
+            await Toast.Make(message,
+                      ToastDuration.Short,
+                      16)
+                .Show(cancellationTokenSource.Token);
         }
 
         static SnackbarOptions OptionsFromType(SnackBarType type)
