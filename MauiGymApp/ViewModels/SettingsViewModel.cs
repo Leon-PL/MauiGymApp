@@ -118,11 +118,10 @@ namespace MauiGymApp.ViewModels
                     Loading = true;
                     try
                     {
-                        var mqs = await _importService.ImportMeasurableQuantitiesAsync(result.FullPath);
-                        await _measurableStateService.AddMeasurableQuantities(mqs.Select(mq => new MeasurableQuantityViewModel(mq)));
+                        await _importService.ImportMeasurableQuantitiesAsync(result.FullPath);
                         await SnackBarService.ShowSnackBar("Successfully Imported", SnackBarType.Success);
                     }
-                    catch
+                    catch 
                     {
                         await SnackBarService.ShowSnackBar("Import Failed", SnackBarType.Failure);
                     }
@@ -141,10 +140,11 @@ namespace MauiGymApp.ViewModels
                 {
                     Loading = true;
                     try
-                    {   
+                    {
+                        await _importService.ImportWorkoutsAsync(result.FullPath);
                         await SnackBarService.ShowSnackBar("Successfully Imported", SnackBarType.Success);
                     }
-                    catch 
+                    catch
                     {
                         await SnackBarService.ShowSnackBar("Import Failed", SnackBarType.Failure);
                     }
