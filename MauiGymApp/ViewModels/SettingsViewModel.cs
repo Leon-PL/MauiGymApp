@@ -3,14 +3,11 @@ using CommunityToolkit.Mvvm.Input;
 using MauiGymApp.Calculations;
 using MauiGymApp.Contexts;
 using MauiGymApp.Services.ImportData;
-using MauiGymApp.Services.Measurables;
 using MauiGymApp.Services.Settings;
 using MauiGymApp.Services.Visual;
 using MauiGymApp.Services.WeightLifting;
 using MauiGymApp.State;
 using MauiGymApp.ViewModels.Common;
-using MauiGymApp.ViewModels.MeasurableQuantities;
-using MauiGymApp.ViewModels.Workouts;
 using MauiGymApp.Views;
 
 namespace MauiGymApp.ViewModels
