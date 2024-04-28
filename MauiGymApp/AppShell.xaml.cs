@@ -11,6 +11,7 @@ namespace MauiGymApp
         public AppShell()
         {
             InitializeComponent();
+            Handler?.UpdateValue("Background");
 
             Routing.RegisterRoute(nameof(HomePage), typeof(HomePage));
             Routing.RegisterRoute(nameof(CalendarPage), typeof(CalendarPage));
@@ -29,6 +30,8 @@ namespace MauiGymApp
             Routing.RegisterRoute(nameof(CalculatorPage), typeof(CalculatorPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute(nameof(ORMEquationsOverviewPage), typeof(ORMEquationsOverviewPage));
+
+            
         }
     }
 }
