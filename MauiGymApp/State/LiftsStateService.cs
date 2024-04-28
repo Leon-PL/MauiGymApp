@@ -1,5 +1,6 @@
 ﻿using MauiGymApp.Nito;
 using MauiGymApp.Services.WeightLifting;
+using MauiGymApp.ViewModels.Utilities;
 using MauiGymApp.ViewModels.Workouts.Lifts;
 
 namespace MauiGymApp.State
@@ -22,7 +23,7 @@ namespace MauiGymApp.State
         }
 
 
-        public IEnumerable<LiftViewModel> Lifts { get; private set; } = [];
+        public List<LiftViewModel> Lifts { get; private set; } = [];
 
         public async Task<IEnumerable<LiftViewModel>> Load()
         {
@@ -34,5 +35,19 @@ namespace MauiGymApp.State
         }
 
         public void SelectLifts(IEnumerable<LiftViewModel> lifts) => LiftsConfirmedSelected?.Invoke(lifts);
+
+        public async Task AddLift(LiftViewModel lift)
+        {
+            await _liftService.AddAsync(lift.ToModel());
+            Lifts.Add(lift);
+            LiftsChanged?.Invoke();
+        }
+
+        public async Task AddLifts(IEnumerable<LiftViewModel> lifts)
+        {
+            await _liftService.AddRangeAsync(lifts.ToModels());
+            Lifts.AddRange(lifts);
+            LiftsChanged?.Invoke();
+        }
     }
 }

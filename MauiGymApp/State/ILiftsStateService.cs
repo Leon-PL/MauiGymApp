@@ -6,7 +6,7 @@ namespace MauiGymApp.State
     {
         public event Action? LiftsChanged;
         public bool Loaded { get; }
-        public IEnumerable<LiftViewModel> Lifts { get; }
+        public List<LiftViewModel> Lifts { get; }
 
         public event Action<IEnumerable<LiftViewModel>>? LiftsConfirmedSelected;
         public void SelectLifts(IEnumerable<LiftViewModel> lifts);
