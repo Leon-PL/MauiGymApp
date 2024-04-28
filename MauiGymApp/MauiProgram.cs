@@ -47,17 +47,16 @@ namespace MauiGymApp
             DevExpress.Maui.Editors.Initializer.Init();
             DevExpress.Maui.DataGrid.Initializer.Init();
           
-
             builder.Services.AddDbContext<MainContext>();
 
-            builder.Services.AddScoped(typeof(ICalculatorService), typeof(CalculatorService))
+            builder.Services.AddTransient(typeof(ICalculatorService), typeof(CalculatorService))
                             .AddSingleton(typeof(ISettingsService), typeof(SettingsService))
                             .AddTransient(typeof(IMeasurablesService), typeof(MeasurablesService))
-                            .AddSingleton(typeof(ILiftService), typeof(LiftService))
-                            .AddSingleton(typeof(ILiftWorkoutService), typeof(LiftWorkoutService))
-                            .AddSingleton(typeof(IRoutineService), typeof(RoutineService))
-                            .AddSingleton(typeof(IWorkoutService), typeof(WorkoutService))
-                            .AddSingleton(typeof(IImportDataService), typeof(FitNotesService))
+                            .AddTransient(typeof(ILiftService), typeof(LiftService))
+                            .AddTransient(typeof(ILiftWorkoutService), typeof(LiftWorkoutService))
+                            .AddTransient(typeof(IRoutineService), typeof(RoutineService))
+                            .AddTransient(typeof(IWorkoutService), typeof(WorkoutService))
+                            .AddTransient(typeof(IImportDataService), typeof(FitNotesService))
                             .AddSingleton(typeof(IMeasurableStateService), typeof(MeasurableStateService))
                             .AddSingleton(typeof(IWorkoutStateService), typeof(WorkoutStateService))
                             .AddSingleton(typeof(IRoutinesStateService), typeof(RoutineStateService))
