@@ -8,10 +8,7 @@
     xmlns:mview="clr-namespace:MauiGymApp.Views.MeasurableQuantities"
     xmlns:view="clr-namespace:MauiGymApp.Views"
     Title="MauiGymApp"
-    Background="{StaticResource Primary}"
-    BackgroundColor="{StaticResource Primary}"
-    FlyoutBehavior="{OnIdiom Phone=Disabled,
-                             Default=Locked}"
+    Shell.BackgroundColor="{StaticResource Primary}"
     Shell.TabBarBackgroundColor="{StaticResource Black}"
     Shell.TabBarForegroundColor="{StaticResource Tertiary}">
 
