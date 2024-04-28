@@ -8,103 +8,140 @@
     x:DataType="viewmodel:SettingsViewModel"
     BackgroundColor="{StaticResource Gray950}">
 
-    <ScrollView Margin="10" WidthRequest="600">
-        <VerticalStackLayout HorizontalOptions="Center" Spacing="20">
-            <Border Style="{StaticResource card}">
-                <VerticalStackLayout Margin="0,0,0,10" Spacing="6">
-                    <Label
-                        FontAttributes="Bold"
-                        FontSize="Large"
-                        Text="Units" />
-                    <Line BackgroundColor="White" />
-                    <HorizontalStackLayout Spacing="20">
-                        <Label Text="Mass" VerticalOptions="Center" />
-                        <VerticalStackLayout Spacing="-5">
-                            <Picker
-                                Title="Select Mass Unit"
-                                SelectedItem="{Binding PreferredMassUnit}"
-                                WidthRequest="200">
-                                <Picker.Items>
-                                    <x:String>Kilograms</x:String>
-                                    <x:String>Pounds</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Line BackgroundColor="{StaticResource Primary}" />
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout Spacing="10">
-                        <Label Text="Length" VerticalOptions="Center" />
-                        <VerticalStackLayout Spacing="-5">
-                            <Picker
-                                Title="Select Length Unit"
-                                SelectedItem="{Binding PreferredLengthUnit}"
-                                WidthRequest="200">
-                                <Picker.Items>
-                                    <x:String>Metres</x:String>
-                                    <x:String>Centimetres</x:String>
-                                    <x:String>Inches</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Line BackgroundColor="{StaticResource Primary}" />
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Border>
+    <VerticalStackLayout
+        Margin="5,10"
+        HorizontalOptions="FillAndExpand"
+        Spacing="10">
+        <Border Style="{StaticResource card}">
+            <VerticalStackLayout Margin="0,0,0,10" Spacing="3">
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    Text="Units" />
+                <Line BackgroundColor="White" />
+                <HorizontalStackLayout Spacing="20">
+                    <Label Text="Mass" VerticalOptions="Center" />
+                    <VerticalStackLayout Spacing="-5">
+                        <Picker
+                            Title="Select Mass Unit"
+                            SelectedItem="{Binding PreferredMassUnit}"
+                            WidthRequest="200">
+                            <Picker.Items>
+                                <x:String>Kilograms</x:String>
+                                <x:String>Pounds</x:String>
+                            </Picker.Items>
+                        </Picker>
+                        <Line BackgroundColor="{StaticResource Primary}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Length" VerticalOptions="Center" />
+                    <VerticalStackLayout Spacing="-5">
+                        <Picker
+                            Title="Select Length Unit"
+                            SelectedItem="{Binding PreferredLengthUnit}"
+                            WidthRequest="200">
+                            <Picker.Items>
+                                <x:String>Metres</x:String>
+                                <x:String>Centimetres</x:String>
+                                <x:String>Inches</x:String>
+                            </Picker.Items>
+                        </Picker>
+                        <Line BackgroundColor="{StaticResource Primary}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
 
-            <Border Style="{StaticResource card}">
-                <VerticalStackLayout>
-                    <HorizontalStackLayout Spacing="10">
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="Large"
-                            HorizontalOptions="Start"
-                            Text="One Rep Max Functions" />
-                        <Button
-                            Padding="-5"
-                            Command="{Binding GoTo1RMEquationsOerviewCommand}"
-                            FontAttributes="Bold"
-                            HeightRequest="30"
-                            HorizontalOptions="End"
-                            Text="&gt;"
-                            WidthRequest="40" />
-                    </HorizontalStackLayout>
 
-                    <Line BackgroundColor="White" />
-                    <HorizontalStackLayout>
-                        <Switch IsToggled="{Binding UseEpley}" />
-                        <Label Margin="15,13,0,0" Text="Epley" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Switch IsToggled="{Binding UseBryzcki}" />
-                        <Label Margin="15,13,0,0" Text="Bryzcki" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Switch IsToggled="{Binding UseLombardi}" />
-                        <Label Margin="15,13,0,0" Text="Lombardi" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Switch IsToggled="{Binding UseMayhew}" />
-                        <Label Margin="15,13,0,0" Text="Mayhew" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Switch IsToggled="{Binding UseOConnor}" />
-                        <Label Margin="15,13,0,0" Text="OConnor" />
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Switch IsToggled="{Binding UseWathan}" />
-                        <Label Margin="15,13,0,0" Text="Wathan" />
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Border>
+        <Border Style="{StaticResource card}">
+            <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="Auto,*,*,*">
+                <Label
+                    Grid.ColumnSpan="5"
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="Rep Max Functions" />
+                <Button
+                    Grid.Column="5"
+                    Padding="-5"
+                    Command="{Binding GoTo1RMEquationsOerviewCommand}"
+                    FontAttributes="Bold"
+                    HeightRequest="30"
+                    HorizontalOptions="End"
+                    Text="&gt;"
+                    WidthRequest="40" />
 
-            <Border Style="{StaticResource card}">
-                <VerticalStackLayout Spacing="10">
-                    <Label FontSize="Large" Text="Data" />
-                    <Button Command="{Binding ImportDataCommand}" Text="Import Data" />
-                    <Line BackgroundColor="White" />
-                    <Button Command="{Binding DeleteAllDataCommand}" Text="Delete All Data" />
-                </VerticalStackLayout>
-            </Border>
-        </VerticalStackLayout>
-    </ScrollView>
+                <Switch
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    IsToggled="{Binding UseEpley}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    FontSize="Caption"
+                    Text="Epley"
+                    VerticalOptions="Center" />
+                <Switch
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    IsToggled="{Binding UseBryzcki}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    FontSize="Caption"
+                    Text="Bryzcki"
+                    VerticalOptions="Center" />
+                <Switch
+                    Grid.Row="1"
+                    Grid.Column="4"
+                    IsToggled="{Binding UseLombardi}" />
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="5"
+                    FontSize="Caption"
+                    Text="Lombardi"
+                    VerticalOptions="Center" />
+
+                <Switch
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    IsToggled="{Binding UseMayhew}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    FontSize="Caption"
+                    Text="Mayhew"
+                    VerticalOptions="Center" />
+                <Switch
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    IsToggled="{Binding UseOConnor}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    FontSize="Caption"
+                    Text="OConnor"
+                    VerticalOptions="Center" />
+                <Switch
+                    Grid.Row="2"
+                    Grid.Column="4"
+                    IsToggled="{Binding UseWathan}" />
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="5"
+                    FontSize="Caption"
+                    Text="Wathan"
+                    VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <Border Style="{StaticResource card}">
+            <VerticalStackLayout Spacing="5">
+                <Label FontSize="Large" Text="Data" />
+                <Button Command="{Binding ImportDataCommand}" Text="Import Data" />
+                <Button Command="{Binding DeleteAllDataCommand}" Text="Delete All Data" />
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
 </ContentPage>
