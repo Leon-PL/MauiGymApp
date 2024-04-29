@@ -49,10 +49,7 @@
                     Date="{Binding SelectedDate}"
                     FontSize="Medium"
                     HeightRequest="60" />
-                <Line
-                    Background="{StaticResource Primary}"
-                    BackgroundColor="{StaticResource Primary}"
-                    Stroke="{StaticResource Primary}" />
+                <Line BackgroundColor="{StaticResource Primary}" />
             </VerticalStackLayout>
             <Button
                 Command="{Binding IncrementDateCommand}"
