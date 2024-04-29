@@ -15,8 +15,7 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
         {
             _stateService = stateService;
 
-            MeasurableQuantity = _stateService.MeasurableQuantityQuery!;
-
+            MeasurableQuantity = (MeasurableQuantityViewModel)_stateService.GetQueryModel<EditMeasurableQuantityViewModel>();
             Name = MeasurableQuantity.Name;
             SelectedQuantityType = MeasurableQuantity.QuantityType.ToString();
             Notes = MeasurableQuantity.Notes;
@@ -63,11 +62,6 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
         [RelayCommand]
         async Task ConfirmAsync()
         {
-            if (MeasurableQuantity is null)
-                return;
-
-            // TODO: VALIDATE
-
             MeasurableQuantity.Name = Name;
             MeasurableQuantity.QuantityType = QuantityType;
             MeasurableQuantity.Notes = Notes;

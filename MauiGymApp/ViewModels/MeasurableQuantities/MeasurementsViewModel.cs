@@ -7,17 +7,13 @@ using LiveChartsCore.SkiaSharpView;
 using MauiGymApp.Calculations;
 using MauiGymApp.Models;
 using MauiGymApp.Models.DTOs.Goals;
-using MauiGymApp.Models.DTOs.Measurables;
-using MauiGymApp.Services.Measurables;
 using MauiGymApp.Services.Settings;
 using MauiGymApp.State;
 using MauiGymApp.ViewModels.Common;
 using MauiGymApp.ViewModels.Utilities;
-using MauiGymApp.Views.MeasurableQuantities;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using UnitsNet;
-using UnitsNet.Units;
 
 namespace MauiGymApp.ViewModels.MeasurableQuantities
 {
@@ -53,18 +49,14 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
             _stateService = stateService;
             _settingsService = settingsService;
 
-            MeasurableQuantity = _stateService.MeasurableQuantityQuery!;
+            MeasurableQuantity = (MeasurableQuantityViewModel)_stateService.GetQueryModel<MeasurementsViewModel>();
 
             MeasurableQuantity.PropertyChanged += OnMeasurableQuantityChanged;
             MeasurableQuantity.Measurements.CollectionChanged += OnMeasurementsChanged;
         }
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(MeasurementDifferentials))]
         MeasurableQuantityViewModel measurableQuantity;
-
-        public IEnumerable<MeasurementDifferentialViewModel> MeasurementDifferentials 
-            => MeasurableQuantity.GetDifferentials(_settingsService.GetUnitPreference(MeasurableQuantity.QuantityType));
 
         [ObservableProperty]
         QuantityType quantityType;
@@ -140,6 +132,10 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
             if (action == "Edit") await GoToEditMeasurableQuantityAsync();
         }
 
+
+        [RelayCommand]
+        async Task OpenNotesAsync() => await Shell.Current.DisplayAlert(title: MeasurableQuantity.Name, message: MeasurableQuantity.Notes, cancel: "Close");
+
         [RelayCommand]
         async Task GoToEditMeasurableQuantityAsync() => await _stateService.GoToEditMeasurableQuantityAsync(MeasurableQuantity);
 
@@ -188,12 +184,13 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
             => await _stateService.GoToEditMeasurementAsync(MeasurableQuantity, measurement);
 
         [RelayCommand]
-        async Task DeleteMeasurement(MeasurementDifferentialViewModel measurement)
+        async Task DeleteMeasurement(MeasurementDifferentialViewModel differential)
         {
             bool confirm = await Shell.Current.DisplayAlert("Delete", "Are you sure you want to delete", "Confirm", "Cancel");
             if (confirm)
             {
-                await _stateService.DeleteMeasurementAsync(measurement);
+                MeasurableQuantity.Measurements.Remove(differential.Measurement);
+                await _stateService.UpdateMeasurableQuantity(MeasurableQuantity);
             }
         }
 

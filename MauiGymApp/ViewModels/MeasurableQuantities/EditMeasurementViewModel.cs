@@ -16,15 +16,18 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
         private readonly IMeasurableStateService _stateService;
         private readonly ISettingsService _settingsService;
 
-        bool _measurementLoaded = false;
-
         public EditMeasurementViewModel(IMeasurableStateService stateService, ISettingsService settingsService)
         {
             _stateService = stateService;
             _settingsService = settingsService;
 
-            MeasurableQuantity = _stateService.MeasurableQuantityQuery!;
-            Measurement = _stateService.MeasurementQuery!;
+            var query = (List<object>)_stateService.GetQueryModel<EditMeasurementViewModel>();
+            MeasurableQuantity = (MeasurableQuantityViewModel)query[0];
+            Measurement = (MeasurementViewModel)query[1];
+
+            Value = Measurement.Value.As(_settingsService.GetUnitPreference(Measurement.QuantityType));
+            Date = Measurement.DateTime;
+            Image = Measurement.Image;
         }
 
         [ObservableProperty]
@@ -54,17 +57,6 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
                 return MeasurementUnit is not null ?
                     UnitsNetHelpers.GetUnitAbreviation(MeasurementUnit) : "";
             }
-        }
-
-        partial void OnMeasurementChanged(MeasurementViewModel value)
-        {
-            if (_measurementLoaded) return;
-            
-            Value = Measurement.Value.As(_settingsService.GetUnitPreference(Measurement.Value));
-            Date = Measurement.DateTime;
-            Image = Measurement.Image;
-            
-            _measurementLoaded = true;
         }
 
         [RelayCommand]
@@ -113,10 +105,11 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
         [RelayCommand]
         async Task DeleteMeasurement()
         {
-                bool confirm = await Shell.Current.DisplayAlert("Delete", "Are you sure you want to delete", "Confirm", "Cancel");
+            bool confirm = await Shell.Current.DisplayAlert("Delete", "Are you sure you want to delete", "Confirm", "Cancel");
             if (confirm)
             {
-                await _stateService.DeleteMeasurementAsync(Measurement);
+                MeasurableQuantity.Measurements.Remove(Measurement);
+                await _stateService.UpdateMeasurableQuantity(MeasurableQuantity);
                 await CloseAsync();
             }
         }
@@ -124,23 +117,15 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
         [RelayCommand]
         async Task ConfirmAsync()
         {
-            if (Measurement is null)
-                return;
+            Measurement.Value = Quantity.From(Value, _settingsService.GetUnitPreference(Measurement.QuantityType));
+            Measurement.Image = Image;
+            Measurement.DateTime = Date;
 
-            var measurement = new MeasurementDTO()
-            {
-                Id = Measurement.ToModel().Id,
-                ValueSI = Quantity.From(Value, _settingsService.GetUnitPreference(Measurement.Value)).AsBaseUnit(),
-                DateTime = Date,
-                QuantityType = Measurement.QuantityType,
-                Image = Image,
-            };
-
-            await _stateService.UpdateMeasurementAsync(new MeasurementViewModel(measurement));
-            await Shell.Current.GoToAsync("..", animate: true);
+            await _stateService.UpdateMeasurableQuantity(MeasurableQuantity);
+            await CloseAsync();
         }
 
         [RelayCommand]
-        async static Task CloseAsync() => await Shell.Current.GoToAsync("..");
+        async static Task CloseAsync() => await Shell.Current.GoToAsync("..", animate: true);
     }
 }

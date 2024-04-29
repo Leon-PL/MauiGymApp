@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MauiGymApp.Views.MeasurableQuantities;
 using MauiGymApp.ViewModels.Common;
 using MauiGymApp.Services.Settings;
 using UnitsNet.Units;
 using MauiGymApp.State;
+using System.Collections.ObjectModel;
 
 namespace MauiGymApp.ViewModels.MeasurableQuantities
 {
@@ -20,9 +20,10 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
 
             UpdateMeasurableQuantities();
             _stateService.MeasurableQuantitiesChanged += UpdateMeasurableQuantities;
-        }
+         }
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(OrderedMeasurableQuantities))]
         public IEnumerable<MeasurableQuantityViewModel> measurableQuantities = [];
 
         public MassUnit MassUnit => _settingsService.MassUnit;
@@ -33,10 +34,9 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
             => MeasurableQuantities.OrderBy(q => q.LatestMeasurement);
 
         void UpdateMeasurableQuantities()
-        {
-            if (!_stateService.Loaded) return;
-            MeasurableQuantities = _stateService.MeasurableQuantities;
-            OnPropertyChanged(nameof(OrderedMeasurableQuantities));
+        {   
+            MeasurableQuantities = new ObservableCollection<MeasurableQuantityViewModel>(_stateService.MeasurableQuantities); // temporary workaround
+            MeasurableQuantities.ToList().ForEach(mq => mq.ValueAs(_settingsService.GetUnitPreference(mq.QuantityType)));
         }
 
         [RelayCommand]
@@ -67,8 +67,8 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
 
         public override void Dispose()
         {
-            _stateService.MeasurableQuantitiesChanged -= UpdateMeasurableQuantities;
             base.Dispose();
+            _stateService.MeasurableQuantitiesChanged -= UpdateMeasurableQuantities;
         }
     }
 }

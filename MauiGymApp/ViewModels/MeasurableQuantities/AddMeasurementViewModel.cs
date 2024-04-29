@@ -21,7 +21,7 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
             _stateService = stateService;
             _settingsService = settingsService;
 
-            MeasurableQuantity = _stateService.MeasurableQuantityQuery!;
+            MeasurableQuantity = (MeasurableQuantityViewModel)_stateService.GetQueryModel<AddMeasurementViewModel>();
             Date = DateTime.Now;
         }
 
@@ -72,12 +72,13 @@ namespace MauiGymApp.ViewModels.MeasurableQuantities
                 Image = Image,
             };
 
-            await _stateService.AddMeasurementAsync(new MeasurementViewModel(measurement));
+            MeasurableQuantity.Measurements.Add(new MeasurementViewModel(measurement));
+            await _stateService.UpdateMeasurableQuantity(MeasurableQuantity);
             await Shell.Current.GoToAsync("../", animate: true);
         }
 
         [RelayCommand]
-        async static Task CancelAsync() => await Shell.Current.GoToAsync("..");
+        async static Task CancelAsync() => await Shell.Current.GoToAsync("..", animate: true);
 
         [RelayCommand]
         async Task AddImage()
