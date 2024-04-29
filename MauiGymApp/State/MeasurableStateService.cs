@@ -1,12 +1,11 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using MauiGymApp.Models;
+﻿using MauiGymApp.Models;
 using MauiGymApp.Models.DTOs.Measurables;
 using MauiGymApp.Nito;
 using MauiGymApp.Services.Measurables;
 using MauiGymApp.Services.Settings;
 using MauiGymApp.ViewModels.MeasurableQuantities;
+using MauiGymApp.ViewModels.Utilities;
 using MauiGymApp.Views.MeasurableQuantities;
-using System.ComponentModel;
 
 namespace MauiGymApp.State
 {
@@ -19,6 +18,10 @@ namespace MauiGymApp.State
         private readonly IMeasurablesService _measurablesService;
         private readonly ISettingsService _settingsService;
 
+        /// <summary>
+        /// Dictionary for passing objects through navigation
+        /// </summary>
+        private readonly Dictionary<string, object> _queryModels = [];
         private IEnumerable<MeasurableQuantityDTO> _measurableQuantities { get; set; } = [];
         private readonly NotifyTask<IEnumerable<MeasurableQuantityViewModel>> LoadMeasurableQuantitiesTask;
 
@@ -39,7 +42,7 @@ namespace MauiGymApp.State
 
 
         public async Task<IEnumerable<MeasurableQuantityViewModel>> Load()
-        {
+        { 
             _measurableQuantities = await _measurablesService.GetAllAsync();
             MeasurableQuantities = _measurableQuantities.Select(mq => new MeasurableQuantityViewModel(mq)).ToList();
             UpdateUnits();
@@ -47,9 +50,10 @@ namespace MauiGymApp.State
             return MeasurableQuantities;
         }
 
+        public object GetQueryModel<T>() => _queryModels[typeof(T).Name];
+
+
         public List<MeasurableQuantityViewModel> MeasurableQuantities { get; private set; } = [];
-        public MeasurableQuantityViewModel? MeasurableQuantityQuery { get; set; }
-        public MeasurementViewModel? MeasurementQuery { get; set; }
 
         #region CRUD
         public async Task AddMeasurableQuantity(MeasurableQuantityViewModel measurableQuantity)
@@ -61,7 +65,7 @@ namespace MauiGymApp.State
 
         public async Task AddMeasurableQuantities(IEnumerable<MeasurableQuantityViewModel> quantities)
         {
-            await _measurablesService.AddRangeAsync(quantities.Select(q => q.ToModel()));
+            await _measurablesService.AddRangeAsync(quantities.ToModels());
             MeasurableQuantities.AddRange(quantities);
             MeasurableQuantitiesChanged?.Invoke();
         }
@@ -81,25 +85,20 @@ namespace MauiGymApp.State
 
         public async Task AddMeasurementAsync(MeasurementViewModel measurement)
         {
-            MeasurableQuantityQuery!.Measurements.Add(measurement);
-            await _measurablesService.UpdateAsync(MeasurableQuantityQuery.ToModel());
+            var mq = (MeasurableQuantityViewModel)_queryModels[nameof(AddMeasurementViewModel)];
+            mq.Measurements.Add(measurement);
+            await _measurablesService.UpdateAsync(mq.ToModel());
 
              MeasurableQuantitiesChanged?.Invoke();
         }
 
         public async Task UpdateMeasurementAsync(MeasurementViewModel measurement)
         {
-            await _measurablesService.UpdateAsync(MeasurableQuantityQuery!.ToModel());
+            var mq = (MeasurableQuantityViewModel)_queryModels[nameof(EditMeasurementViewModel)];
+            await _measurablesService.UpdateAsync(mq.ToModel());
             MeasurableQuantitiesChanged?.Invoke();
         }
 
-        public async Task DeleteMeasurementAsync(MeasurementViewModel measurement)
-        {
-
-            MeasurableQuantityQuery!.Measurements.Remove(measurement);
-            await _measurablesService.UpdateAsync(MeasurableQuantityQuery.ToModel());
-            MeasurableQuantitiesChanged?.Invoke();
-        }
 
         #endregion
 
@@ -117,7 +116,7 @@ namespace MauiGymApp.State
         #region Navigation
         public async Task GoToMeasurementsAsync(MeasurableQuantityViewModel measurableQuantity)
         {
-            MeasurableQuantityQuery = measurableQuantity;
+            _queryModels[nameof(MeasurementsViewModel)] = measurableQuantity;
             await Shell.Current.GoToAsync($"{nameof(MeasurementsPage)}", animate: true); 
         }
 
@@ -127,20 +126,19 @@ namespace MauiGymApp.State
 
         public async Task GoToEditMeasurableQuantityAsync(MeasurableQuantityViewModel vm)
         {
-            MeasurableQuantityQuery = vm;
+            _queryModels[nameof(EditMeasurableQuantityViewModel)] = vm;    
             await Shell.Current.GoToAsync($"{nameof(EditMeasurableQuantityPage)}", animate: true);
         }
 
         public async Task GoToAddMeasurementAsync(MeasurableQuantityViewModel vm)
         {
-            MeasurableQuantityQuery = vm;
+            _queryModels[nameof(AddMeasurementViewModel)] = vm; 
             await Shell.Current.GoToAsync($"{nameof(AddMeasurementPage)}", animate: true);
         }
 
         public async Task GoToEditMeasurementAsync(MeasurableQuantityViewModel measurableQuantity, MeasurementViewModel measurement)
         {
-            MeasurableQuantityQuery = measurableQuantity;
-            MeasurementQuery = measurement;
+            _queryModels[nameof(EditMeasurementPage)] = new List<object>() { measurableQuantity, measurement};
             await Shell.Current.GoToAsync($"{nameof(EditMeasurementPage)}", animate: true);
         }
 
