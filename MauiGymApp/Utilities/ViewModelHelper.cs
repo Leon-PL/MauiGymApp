@@ -7,7 +7,6 @@ using MauiGymApp.ViewModels.MeasurableQuantities;
 using MauiGymApp.ViewModels.Workouts;
 using MauiGymApp.ViewModels.Workouts.Lifts;
 using PluralizeService.Core;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using UnitsNet;
 
@@ -51,15 +50,17 @@ namespace MauiGymApp.ViewModels.Utilities
         {
             if (!measurements.Any()) return [];
             var ordered = measurements.OrderByDescending(m => m.DateTime).ToList();
+            
 
             if(unit is null)
             return Enumerable.Range(0, ordered.Count - 1)
-                  .Select(i => new MeasurementDifferentialViewModel(ordered[i].ToModel(), ordered[i].Value.Substract(ordered[i + 1].Value)))
-                  .Append(new MeasurementDifferentialViewModel(ordered[ordered.Count - 1].ToModel(), null));
+                  .Select(i => new MeasurementDifferentialViewModel(ordered[i], ordered[i].Value.Substract(ordered[i + 1].Value)))
+                  .Append(new MeasurementDifferentialViewModel(ordered[ordered.Count - 1], null));
 
+            ordered.ForEach(o => o.ValueAs(unit));
             return Enumerable.Range(0, ordered.Count - 1)
-                  .Select(i => new MeasurementDifferentialViewModel(ordered[i].ToModel(), ordered[i].Value.Substract(ordered[i + 1].Value).AsUnit(unit)))
-                  .Append(new MeasurementDifferentialViewModel(ordered[ordered.Count - 1].ToModel(), null));
+                  .Select(i => new MeasurementDifferentialViewModel(ordered[i], ordered[i].Value.Substract(ordered[i + 1].Value).AsUnit(unit)))
+                  .Append(new MeasurementDifferentialViewModel(ordered[ordered.Count - 1], null));
         }
 
         public static string FormatAsString(this MovementPattern pattern)
@@ -74,7 +75,5 @@ namespace MauiGymApp.ViewModels.Utilities
             var info = new CultureInfo("en-US", false).TextInfo;
             return Enum.Parse<MovementPattern>(PluralizationProvider.Singularize(info.ToTitleCase(pattern)));
         }
-
-
     }
 }
