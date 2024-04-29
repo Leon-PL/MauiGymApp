@@ -102,7 +102,7 @@ namespace MauiGymApp.Data.Importing
                 {
                     Name = mq,
                     QuantityType = mqTypes[mq],
-                    DateCreated = creationDT[mq],
+                    DateCreated = creationDT[mq], 
                     Goal = null
                 };
 
@@ -116,7 +116,7 @@ namespace MauiGymApp.Data.Importing
                     {
                         DateCreated = (DateTime)mqDF["DateTime"][i],
                         DateTime = (DateTime)mqDF["DateTime"][i],
-                        Image = null,
+                        Image = [],
                         QuantityType = mqTypes[mq],
                         ValueSI = quantity.AsBaseUnit(),
                     };
