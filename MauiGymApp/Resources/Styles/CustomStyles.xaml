@@ -28,7 +28,7 @@
     <Style x:Key="card" TargetType="Border">
         <Setter Property="BackgroundColor" Value="{StaticResource Gray950}" />
         <Setter Property="Padding" Value="16,8" />
-        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
         <Setter Property="MinimumHeightRequest" Value="45" />
         <Setter Property="MinimumWidthRequest" Value="320" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10" />
