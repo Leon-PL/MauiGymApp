@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/MauiGymApp/.meteor
+/profile.ps1
+/dotnet-dsrouter.exe_20240507_205230.speedscope.json
+/dotnet-dsrouter.exe_20240507_205230.nettrace
+/.vscode
